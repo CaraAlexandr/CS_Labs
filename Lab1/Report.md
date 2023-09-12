@@ -21,27 +21,30 @@ We provided the following functionality:
 
 #### Code Implementation
 ```python
-def caesar_cipher(text, key, operation):
-    result = []
+def caesar_cipher(text, key, mode):
+    if key < 1 or key > 25:
+        print("The key must be between 1 and 25.")
+        return ""
 
+    # English alphabet
+    alphabet = "ABCDEFGHIJKLMNOPQRSTUVWXYZ"
+
+    # Remove spaces and convert the text to uppercase
+    text = text.replace(" ", "").upper()
+
+    result = ""
     for char in text:
         if 'A' <= char <= 'Z':
-            base = ord('A')
-        elif 'a' <= char <= 'z':
-            base = ord('a')
+            if mode == 'encryption':
+                index = (alphabet.index(char) + key) % 26
+            else:
+                index = (alphabet.index(char) - key) % 26
+            result += alphabet[index]
         else:
-            return "Invalid input. Only alphabetic characters are allowed."
+            print(f"Character '{char}' is invalid. Only letters A-Z are allowed.")
+            return ""
 
-        if operation == 'encrypt':
-            new_char = chr((ord(char) - base + key) % 26 + base)
-        elif operation == 'decrypt':
-            new_char = chr((ord(char) - base - key) % 26 + base)
-        else:
-            return "Invalid operation. Choose 'encrypt' or 'decrypt'."
-
-        result.append(new_char)
-
-    return ''.join(result)
+    return result
 ```
 
 #### Example
@@ -65,35 +68,42 @@ We provided the following functionality:
 
 #### Code Implementation
 ```python
-def caesar_cipher(text, key1, key2, operation):
-    result = []
+def caesar_cipher(text, key1, key2, mode):
+    if key1 < 1 or key1 > 25:
+        print("Key 1 must be between 1 and 25.")
+        return ""
 
-    # Check if key2 contains only letters of the Latin alphabet and has length >= 7
-    if not (key2.isalpha() and len(key2) >= 7):
-        return "Invalid key 2. Key 2 must contain only Latin alphabet letters and have a length of at least 7."
+    if len(key2) < 7 or not key2.isalpha():
+        print("Key 2 must contain only Latin alphabet letters and have a length of at least 7 characters.")
+        return ""
 
-    key2 = key2.upper()  # Convert key2 to uppercase
+    # English alphabet
+    alphabet = "ABCDEFGHIJKLMNOPQRSTUVWXYZ"
 
+    # Remove spaces and convert the text to uppercase
+    text = text.replace(" ", "").upper()
+
+    result = ""
+    key2_index = 0
     for char in text:
         if 'A' <= char <= 'Z':
-            base = ord('A')
-        elif 'a' <= char <= 'z':
-            base = ord('a')
+            if mode == 'encryption':
+                index1 = (alphabet.index(char) + key1) % 26
+                index2 = (alphabet.index(key2[key2_index].upper())) % 26
+                encrypted_char = alphabet[(index1 + index2) % 26]
+                key2_index = (key2_index + 1) % len(key2)
+                result += encrypted_char
+            else:
+                index1 = (alphabet.index(char) - key1) % 26
+                index2 = (alphabet.index(key2[key2_index].upper())) % 26
+                decrypted_char = alphabet[(index1 - index2) % 26]
+                key2_index = (key2_index + 1) % len(key2)
+                result += decrypted_char
         else:
-            return "Invalid input. Only alphabetic characters are allowed."
+            print(f"Character '{char}' is invalid. Only letters A-Z are allowed.")
+            return ""
 
-        if operation == 'encrypt':
-            shift = (ord(key2[len(result) % len(key2)]) - base) % 26  # Vary key2 for each character
-            new_char = chr((ord(char) - base + key1 + shift) % 26 + base)
-        elif operation == 'decrypt':
-            shift = (ord(key2[len(result) % len(key2)]) - base) % 26  # Vary key2 for each character
-            new_char = chr((ord(char) - base - key1 - shift) % 26 + base)
-        else:
-            return "Invalid operation. Choose 'encrypt' or 'decrypt'."
-
-        result.append(new_char)
-
-    return ''.join(result)
+    return result
 ```
 #### Example
 ![Task 2 encrypt](Img/1.2encrypt.png)
