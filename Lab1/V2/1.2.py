@@ -46,6 +46,7 @@ key2 = input("Enter the second key (at least 7 Latin letters): ")
 message = input("Enter the message or ciphertext: ")
 
 # Perform encryption or decryption based on the selected mode
+#small change
 if mode == 'encryption':
     result = caesar_cipher(message, key1, key2, 'encryption')
     print("Encrypted message:", result)
