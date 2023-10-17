@@ -1,8 +1,5 @@
-import string
-
-
 def format_input(text):
-    alphabet = "AĂÂBCDEFGHIÎJKLMNOPQRŞTŢUVWXYZ01234"
+    alphabet = "AĂÂBCDEFGHIÎKLMNOPQRSŞTŢUVWXYZ"
     text = text.upper().replace(" ", "")
     for c in text:
         if c not in alphabet:
@@ -13,7 +10,7 @@ def format_input(text):
 
 def create_matrix(key):
     matrix = [[None for _ in range(6)] for _ in range(6)]
-    alphabet = list("AĂÂBCDEFGHIÎJKLMNOPQRŞTŢUVWXYZ01234")
+    alphabet = list("AĂÂBCDEFGHIÎKLMNOPQRSŞTŢUVWXYZ")
 
     # Remove characters from the alphabet that are in the key
     for char in key:
@@ -66,7 +63,7 @@ def playfair(key, text, mode):
                 processed_text += matrix[(x1 + 1) % 6][y1] + matrix[(x2 + 1) % 6][y2]
             else:
                 processed_text += matrix[(x1 - 1) % 6][y1] + matrix[(x2 - 1) % 6][y2]
-        else:  # Rectangle
+        else:
             processed_text += matrix[x1][y2] + matrix[x2][y1]
 
         i += 2
