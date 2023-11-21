@@ -1,0 +1,338 @@
+(* Content-type: application/vnd.wolfram.mathematica *)
+
+(*** Wolfram Notebook File ***)
+(* http://www.wolfram.com/nb *)
+
+(* CreatedBy='Mathematica 13.3' *)
+
+(*CacheID: 234*)
+(* Internal cache information:
+NotebookFileLineBreakTest
+NotebookFileLineBreakTest
+NotebookDataPosition[       158,          7]
+NotebookDataLength[     13811,        330]
+NotebookOptionsPosition[     12726,        305]
+NotebookOutlinePosition[     13127,        321]
+CellTagsIndexPosition[     13084,        318]
+WindowFrame->Normal*)
+
+(* Beginning of Notebook Content *)
+Notebook[{
+
+Cell[CellGroupData[{
+Cell[BoxData[
+ RowBox[{
+  RowBox[{"(*", 
+   RowBox[{
+   "RSA", " ", "Algorithm", " ", "Implementation", " ", "in", " ", 
+    "Mathematica"}], "*)"}], 
+  RowBox[{"(*", 
+   RowBox[{"Key", " ", "Generation"}], "*)"}], 
+  RowBox[{
+   RowBox[{
+    RowBox[{"p", "=", 
+     RowBox[{"RandomPrime", "[", 
+      RowBox[{"{", 
+       RowBox[{
+        RowBox[{"2", "^", "1023"}], ",", 
+        RowBox[{
+         RowBox[{"2", "^", "1024"}], "-", "1"}]}], "}"}], "]"}]}], ";"}], 
+   "\n", 
+   RowBox[{
+    RowBox[{"q", "=", 
+     RowBox[{"RandomPrime", "[", 
+      RowBox[{"{", 
+       RowBox[{
+        RowBox[{"2", "^", "1023"}], ",", 
+        RowBox[{
+         RowBox[{"2", "^", "1024"}], "-", "1"}]}], "}"}], "]"}]}], ";"}], 
+   "\n", 
+   RowBox[{
+    RowBox[{"n", "=", 
+     RowBox[{"p", "*", "q"}]}], ";"}], "\n", 
+   RowBox[{
+    RowBox[{"phi", "=", 
+     RowBox[{
+      RowBox[{"(", 
+       RowBox[{"p", "-", "1"}], ")"}], "*", 
+      RowBox[{"(", 
+       RowBox[{"q", "-", "1"}], ")"}]}]}], ";"}], "\n", 
+   RowBox[{
+    RowBox[{"e", "=", "65537"}], ";"}], "\n", 
+   RowBox[{
+    RowBox[{"d", "=", 
+     RowBox[{"PowerMod", "[", 
+      RowBox[{"e", ",", 
+       RowBox[{"-", "1"}], ",", "phi"}], "]"}]}], ";"}], 
+   "\[IndentingNewLine]", "\n", 
+   RowBox[{"(*", 
+    RowBox[{"Display", " ", "the", " ", "keys"}], "*)"}], 
+   "\[IndentingNewLine]", 
+   RowBox[{
+    RowBox[{"Print", "[", 
+     RowBox[{"\"\<Public Key (e, n): \>\"", ",", 
+      RowBox[{"{", 
+       RowBox[{"e", ",", "n"}], "}"}]}], "]"}], ";"}], "\n", 
+   RowBox[{
+    RowBox[{"Print", "[", 
+     RowBox[{"\"\<Private Key (d, n): \>\"", ",", 
+      RowBox[{"{", 
+       RowBox[{"d", ",", "n"}], "}"}]}], "]"}], ";"}], "\[IndentingNewLine]", 
+   "\n", 
+   RowBox[{"(*", "Encryption", "*)"}], "\[IndentingNewLine]", 
+   RowBox[{
+    RowBox[{"m", "=", "\"\<Cara Alexandr\>\""}], ";"}], "\n", 
+   RowBox[{
+    RowBox[{"Print", "[", 
+     RowBox[{"\"\<Original Message: \>\"", ",", "m"}], "]"}], ";"}], 
+   "\[IndentingNewLine]", "\n", 
+   RowBox[{"(*", 
+    RowBox[{"Convert", " ", "message", " ", "to", " ", "integer"}], "*)"}], 
+   "\[IndentingNewLine]", 
+   RowBox[{
+    RowBox[{"mInt", "=", 
+     RowBox[{"FromDigits", "[", 
+      RowBox[{
+       RowBox[{"IntegerDigits", "[", 
+        RowBox[{
+         RowBox[{"ToCharacterCode", "[", "m", "]"}], ",", "256"}], "]"}], ",",
+        "10"}], "]"}]}], ";"}], "\n", 
+   RowBox[{
+    RowBox[{"Print", "[", 
+     RowBox[{"\"\<Message as Integer: \>\"", ",", "mInt"}], "]"}], ";"}], 
+   "\[IndentingNewLine]", "\n", 
+   RowBox[{"(*", "Encrypt", "*)"}], "\[IndentingNewLine]", 
+   RowBox[{
+    RowBox[{"c", "=", 
+     RowBox[{"PowerMod", "[", 
+      RowBox[{"mInt", ",", "e", ",", "n"}], "]"}]}], ";"}], "\n", 
+   RowBox[{
+    RowBox[{"Print", "[", 
+     RowBox[{"\"\<Encrypted Message: \>\"", ",", "c"}], "]"}], ";"}], 
+   "\[IndentingNewLine]", "\n", 
+   RowBox[{"(*", "Decryption", "*)"}], "\[IndentingNewLine]", 
+   RowBox[{
+    RowBox[{"mDecryptedInt", "=", 
+     RowBox[{"PowerMod", "[", 
+      RowBox[{"c", ",", "d", ",", "n"}], "]"}]}], ";"}], "\n", 
+   RowBox[{
+    RowBox[{"Print", "[", 
+     RowBox[{"\"\<Decrypted Message as Integer: \>\"", ",", "mDecryptedInt"}],
+      "]"}], ";"}], "\[IndentingNewLine]", "\n", 
+   RowBox[{"(*", 
+    RowBox[{"Convert", " ", "back", " ", "to", " ", "string"}], "*)"}], 
+   "\[IndentingNewLine]", 
+   RowBox[{
+    RowBox[{"mDecrypted", "=", 
+     RowBox[{"FromCharacterCode", "[", 
+      RowBox[{"IntegerDigits", "[", 
+       RowBox[{"mDecryptedInt", ",", "256"}], "]"}], "]"}]}], ";"}], "\n", 
+   RowBox[{
+    RowBox[{"Print", "[", 
+     RowBox[{"\"\<Decrypted Message: \>\"", ",", "mDecrypted"}], "]"}], ";"}],
+    "\[IndentingNewLine]", "\n", 
+   RowBox[{"(*", "Verification", "*)"}], "\[IndentingNewLine]", 
+   RowBox[{
+    RowBox[{"If", "[", 
+     RowBox[{
+      RowBox[{"m", "==", "mDecrypted"}], ",", 
+      RowBox[{
+      "Print", "[", 
+       "\"\<RSA Test Passed: Decrypted message matches the original.\>\"", 
+       "]"}], ",", 
+      RowBox[{
+      "Print", "[", 
+       "\"\<RSA Test Failed: Decrypted message does not match the original.\>\
+\"", "]"}]}], "]"}], ";"}], "\n"}]}]], "Input",
+ CellChangeTimes->{{3.9095396615598783`*^9, 3.909539661560874*^9}},
+ CellLabel->"In[12]:=",ExpressionUUID->"f5e7b90f-8a9c-42c2-a0b4-11788db7494e"],
+
+Cell[CellGroupData[{
+
+Cell[BoxData[
+ InterpretationBox[
+  RowBox[{"\<\"Public Key (e, n): \"\>", "\[InvisibleSpace]", 
+   RowBox[{"{", 
+    RowBox[{
+    "65537", ",", 
+     "228673276799012467370178073652971314655037416502233998559307122764575998\
+383809757973547601332988125396296104399056199268747239974045807291452024057291\
+667906144420846280414241723310290188485488103393778224849628237889167097716443\
+270167867434327552121581439563631574379815315660312314564120805458848745779912\
+532417996361436180090497632847697692137718676366614298339120890396876998845496\
+373292536589901056165926063335147835000205791731420530365787929064831554882670\
+665774916700794921794592382301214052552917647097990339539526396948399873512217\
+55064704468897191108530752065780904117611402770120799104899202186112676099139"\
+}], "}"}]}],
+  SequenceForm[
+  "Public Key (e, n): ", {
+   65537, 22867327679901246737017807365297131465503741650223399855930712276457\
+599838380975797354760133298812539629610439905619926874723997404580729145202405\
+729166790614442084628041424172331029018848548810339377822484962823788916709771\
+644327016786743432755212158143956363157437981531566031231456412080545884874577\
+991253241799636143618009049763284769769213771867636661429833912089039687699884\
+549637329253658990105616592606333514783500020579173142053036578792906483155488\
+267066577491670079492179459238230121405255291764709799033953952639694839987351\
+221755064704468897191108530752065780904117611402770120799104899202186112676099\
+139}],
+  Editable->False]], "Print",
+ CellChangeTimes->{3.9095396663051267`*^9},
+ CellLabel->
+  "During evaluation of \
+In[12]:=",ExpressionUUID->"150fc030-7705-4eee-8956-46349fd089d9"],
+
+Cell[BoxData[
+ InterpretationBox[
+  RowBox[{"\<\"Private Key (d, n): \"\>", "\[InvisibleSpace]", 
+   RowBox[{"{", 
+    RowBox[{
+    "1717919462776657282294080817905006740778608603000975161979871857014190347\
+502460203217665769203605650836418923674799269267249089845758170498289577560882\
+443407391330144287378914391440276092906755995940105726608091046656566833402365\
+748617567653251907885021007509559571629797986867796329945601394138641988262202\
+020681955680898869506311578115625243897108365107253197869154922440062955963963\
+703818288204159638265451325636143188182425284126895369771540498953890481486709\
+210508791029084664259074149246613651616782927472338879607906294687608003876385\
+7796378237471758734744273355616151448954373461695631896341975176897949867673",
+      ",", "228673276799012467370178073652971314655037416502233998559307122764\
+575998383809757973547601332988125396296104399056199268747239974045807291452024\
+057291667906144420846280414241723310290188485488103393778224849628237889167097\
+716443270167867434327552121581439563631574379815315660312314564120805458848745\
+779912532417996361436180090497632847697692137718676366614298339120890396876998\
+845496373292536589901056165926063335147835000205791731420530365787929064831554\
+882670665774916700794921794592382301214052552917647097990339539526396948399873\
+512217550647044688971911085307520657809041176114027701207991048992021861126760\
+99139"}], "}"}]}],
+  SequenceForm[
+  "Private Key (d, n): ", {
+   171791946277665728229408081790500674077860860300097516197987185701419034750\
+246020321766576920360565083641892367479926926724908984575817049828957756088244\
+340739133014428737891439144027609290675599594010572660809104665656683340236574\
+861756765325190788502100750955957162979798686779632994560139413864198826220202\
+068195568089886950631157811562524389710836510725319786915492244006295596396370\
+381828820415963826545132563614318818242528412689536977154049895389048148670921\
+050879102908466425907414924661365161678292747233887960790629468760800387638577\
+96378237471758734744273355616151448954373461695631896341975176897949867673, 
+    22867327679901246737017807365297131465503741650223399855930712276457599838\
+380975797354760133298812539629610439905619926874723997404580729145202405729166\
+790614442084628041424172331029018848548810339377822484962823788916709771644327\
+016786743432755212158143956363157437981531566031231456412080545884874577991253\
+241799636143618009049763284769769213771867636661429833912089039687699884549637\
+329253658990105616592606333514783500020579173142053036578792906483155488267066\
+577491670079492179459238230121405255291764709799033953952639694839987351221755\
+064704468897191108530752065780904117611402770120799104899202186112676099139}],
+  Editable->False]], "Print",
+ CellChangeTimes->{3.909539666325835*^9},
+ CellLabel->
+  "During evaluation of \
+In[12]:=",ExpressionUUID->"8166c5cf-bc1e-411c-ae84-28f82b5f8fb4"],
+
+Cell[BoxData[
+ InterpretationBox[
+  RowBox[{"\<\"Original Message: \"\>", 
+   "\[InvisibleSpace]", "\<\"Cara Alexandr\"\>"}],
+  SequenceForm["Original Message: ", "Cara Alexandr"],
+  Editable->False]], "Print",
+ CellChangeTimes->{3.9095396663360147`*^9},
+ CellLabel->
+  "During evaluation of \
+In[12]:=",ExpressionUUID->"f6f506df-c931-42b6-98a1-b7de1e45cf38"],
+
+Cell[BoxData[
+ InterpretationBox[
+  RowBox[{"\<\"Message as Integer: \"\>", "\[InvisibleSpace]", 
+   RowBox[{"{", "77940969409114", "}"}]}],
+  SequenceForm["Message as Integer: ", {77940969409114}],
+  Editable->False]], "Print",
+ CellChangeTimes->{3.909539666342478*^9},
+ CellLabel->
+  "During evaluation of \
+In[12]:=",ExpressionUUID->"70ec3117-e649-4b20-bb21-494947a38b45"],
+
+Cell[BoxData[
+ InterpretationBox[
+  RowBox[{"\<\"Encrypted Message: \"\>", "\[InvisibleSpace]", 
+   RowBox[{
+   "{", "166345197965712406562348925578032890281909911671550002665458737257879\
+004253447852852678740051775424126952088921714920129094329825561247584647858085\
+786017084186119203058844691726885492782627173666465906058800191698357641546959\
+304609836268526839692472423952228058567704088661136377795112616693886345629429\
+350256339796195815440924143724944810150843079505723911736731645463266096652408\
+030183328684105324196590982907455237527513207648982169780556632684348326404026\
+967333548063375772206784907854913862194430758075606986307693796731207139559620\
+347645484163820548332250459715775999735410131704754523908053637615256703725119\
+16", "}"}]}],
+  SequenceForm[
+  "Encrypted Message: ", {
+   166345197965712406562348925578032890281909911671550002665458737257879004253\
+447852852678740051775424126952088921714920129094329825561247584647858085786017\
+084186119203058844691726885492782627173666465906058800191698357641546959304609\
+836268526839692472423952228058567704088661136377795112616693886345629429350256\
+339796195815440924143724944810150843079505723911736731645463266096652408030183\
+328684105324196590982907455237527513207648982169780556632684348326404026967333\
+548063375772206784907854913862194430758075606986307693796731207139559620347645\
+48416382054833225045971577599973541013170475452390805363761525670372511916}],
+  Editable->False]], "Print",
+ CellChangeTimes->{3.909539666346531*^9},
+ CellLabel->
+  "During evaluation of \
+In[12]:=",ExpressionUUID->"da5ed43c-2a87-408b-a0ef-af8e65c85f0e"],
+
+Cell[BoxData[
+ InterpretationBox[
+  RowBox[{"\<\"Decrypted Message as Integer: \"\>", "\[InvisibleSpace]", 
+   RowBox[{"{", "77940969409114", "}"}]}],
+  SequenceForm["Decrypted Message as Integer: ", {77940969409114}],
+  Editable->False]], "Print",
+ CellChangeTimes->{3.909539666352352*^9},
+ CellLabel->
+  "During evaluation of \
+In[12]:=",ExpressionUUID->"6416ecd2-8500-4705-980c-2ef2f8158f87"],
+
+Cell[BoxData[
+ InterpretationBox[
+  RowBox[{"\<\"Decrypted Message: \"\>", "\[InvisibleSpace]", 
+   RowBox[{"{", "\<\"F\[ATilde]\.0b\[CapitalEDoubleDot]\.8aZ\"\>", "}"}]}],
+  SequenceForm[
+  "Decrypted Message: ", {"F\[ATilde]\.0b\[CapitalEDoubleDot]\.8aZ"}],
+  Editable->False]], "Print",
+ CellChangeTimes->{3.909539666355362*^9},
+ CellLabel->
+  "During evaluation of \
+In[12]:=",ExpressionUUID->"79356a7a-4d0c-4d13-b64d-2c8562ac7957"]
+}, Open  ]]
+}, Open  ]]
+},
+WindowSize->{1141.2, 573.6},
+WindowMargins->{{0, Automatic}, {Automatic, 0}},
+FrontEndVersion->"13.3 for Microsoft Windows (64-bit) (July 24, 2023)",
+StyleDefinitions->"Default.nb",
+ExpressionUUID->"b9b2bba7-141a-427d-a780-d8ba5821bf9a"
+]
+(* End of Notebook Content *)
+
+(* Internal cache information *)
+(*CellTagsOutline
+CellTagsIndex->{}
+*)
+(*CellTagsIndex
+CellTagsIndex->{}
+*)
+(*NotebookFileOutline
+Notebook[{
+Cell[CellGroupData[{
+Cell[580, 22, 4301, 125, 676, "Input",ExpressionUUID->"f5e7b90f-8a9c-42c2-a0b4-11788db7494e"],
+Cell[CellGroupData[{
+Cell[4906, 151, 1667, 30, 110, "Print",ExpressionUUID->"150fc030-7705-4eee-8956-46349fd089d9"],
+Cell[6576, 183, 2922, 44, 198, "Print",ExpressionUUID->"8166c5cf-bc1e-411c-ae84-28f82b5f8fb4"],
+Cell[9501, 229, 359, 9, 22, "Print",ExpressionUUID->"f6f506df-c931-42b6-98a1-b7de1e45cf38"],
+Cell[9863, 240, 375, 9, 22, "Print",ExpressionUUID->"70ec3117-e649-4b20-bb21-494947a38b45"],
+Cell[10241, 251, 1620, 27, 110, "Print",ExpressionUUID->"da5ed43c-2a87-408b-a0ef-af8e65c85f0e"],
+Cell[11864, 280, 395, 9, 22, "Print",ExpressionUUID->"6416ecd2-8500-4705-980c-2ef2f8158f87"],
+Cell[12262, 291, 436, 10, 25, "Print",ExpressionUUID->"79356a7a-4d0c-4d13-b64d-2c8562ac7957"]
+}, Open  ]]
+}, Open  ]]
+}
+]
+*)
+

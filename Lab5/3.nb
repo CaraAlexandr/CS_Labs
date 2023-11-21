@@ -1,0 +1,621 @@
+(* Content-type: application/vnd.wolfram.mathematica *)
+
+(*** Wolfram Notebook File ***)
+(* http://www.wolfram.com/nb *)
+
+(* CreatedBy='Mathematica 13.3' *)
+
+(*CacheID: 234*)
+(* Internal cache information:
+NotebookFileLineBreakTest
+NotebookFileLineBreakTest
+NotebookDataPosition[       158,          7]
+NotebookDataLength[     28568,        613]
+NotebookOptionsPosition[     26979,        583]
+NotebookOutlinePosition[     27399,        599]
+CellTagsIndexPosition[     27356,        596]
+WindowFrame->Normal*)
+
+(* Beginning of Notebook Content *)
+Notebook[{
+
+Cell[CellGroupData[{
+Cell[BoxData[
+ RowBox[{
+  RowBox[{"(*", 
+   RowBox[{"Diffie", "-", 
+    RowBox[{
+    "Hellman", " ", "Key", " ", "Exchange", " ", "and", " ", "AES", " ", 
+     "Encryption", " ", "in", " ", "Mathematica"}]}], "*)"}], 
+  RowBox[{"(*", 
+   RowBox[{
+   "Given", " ", "prime", " ", "number", " ", "p", " ", "and", " ", 
+    "generator", " ", "g"}], "*)"}], 
+  RowBox[{
+   RowBox[{
+    RowBox[{
+    "p", "=", 
+     "323170060713110073001535134778251633624880571334890751745884341392698068\
+341362100027920563626401646854585563579353308169288290230805734726252735547424\
+612457410262025279165729728627063003252634282131457669314142236542209411113486\
+299916574782680342305530863490506355577122191878903327295696961297438562417412\
+362372251973464026918557977679768230146253979330580152268587307611975324364674\
+758554607150438968449403661304976978128542959586595975670512838521327844685229\
+255045682728791137200989318739591433741758378260002780349731985520606075332341\
+22603254684088120031105907484281003994966956119696956248629032338072839127039"\
+}], ";"}], "\n", 
+   RowBox[{
+    RowBox[{"g", "=", "2"}], ";"}], "\[IndentingNewLine]", "\n", 
+   RowBox[{"(*", 
+    RowBox[{
+    "Alice", " ", "and", " ", "Bob", " ", "choose", " ", "their", " ", 
+     "private", " ", "keys"}], "*)"}], "\[IndentingNewLine]", 
+   RowBox[{
+    RowBox[{"a", "=", 
+     RowBox[{"RandomInteger", "[", 
+      RowBox[{"{", 
+       RowBox[{"1", ",", 
+        RowBox[{"p", "-", "2"}]}], "}"}], "]"}]}], ";"}], "\n", 
+   RowBox[{
+    RowBox[{"b", "=", 
+     RowBox[{"RandomInteger", "[", 
+      RowBox[{"{", 
+       RowBox[{"1", ",", 
+        RowBox[{"p", "-", "2"}]}], "}"}], "]"}]}], ";"}], "\n", 
+   RowBox[{
+    RowBox[{"Print", "[", 
+     RowBox[{"\"\<Alice's Private Key (a): \>\"", ",", "a"}], "]"}], ";"}], 
+   "\n", 
+   RowBox[{
+    RowBox[{"Print", "[", 
+     RowBox[{"\"\<Bob's Private Key (b): \>\"", ",", "b"}], "]"}], ";"}], 
+   "\[IndentingNewLine]", "\n", 
+   RowBox[{"(*", 
+    RowBox[{
+    "Alice", " ", "and", " ", "Bob", " ", "compute", " ", "their", " ", 
+     "public", " ", "keys"}], "*)"}], "\[IndentingNewLine]", 
+   RowBox[{
+    RowBox[{"A", "=", 
+     RowBox[{"PowerMod", "[", 
+      RowBox[{"g", ",", "a", ",", "p"}], "]"}]}], ";"}], "\n", 
+   RowBox[{
+    RowBox[{"B", "=", 
+     RowBox[{"PowerMod", "[", 
+      RowBox[{"g", ",", "b", ",", "p"}], "]"}]}], ";"}], "\n", 
+   RowBox[{
+    RowBox[{"Print", "[", 
+     RowBox[{"\"\<Alice's Public Key (A): \>\"", ",", "A"}], "]"}], ";"}], 
+   "\n", 
+   RowBox[{
+    RowBox[{"Print", "[", 
+     RowBox[{"\"\<Bob's Public Key (B): \>\"", ",", "B"}], "]"}], ";"}], 
+   "\[IndentingNewLine]", "\n", 
+   RowBox[{"(*", 
+    RowBox[{
+    "Alice", " ", "and", " ", "Bob", " ", "compute", " ", "the", " ", 
+     "shared", " ", "secret"}], "*)"}], "\[IndentingNewLine]", 
+   RowBox[{
+    RowBox[{"sharedSecretAlice", "=", 
+     RowBox[{"PowerMod", "[", 
+      RowBox[{"B", ",", "a", ",", "p"}], "]"}]}], ";"}], "\n", 
+   RowBox[{
+    RowBox[{"sharedSecretBob", "=", 
+     RowBox[{"PowerMod", "[", 
+      RowBox[{"A", ",", "b", ",", "p"}], "]"}]}], ";"}], "\n", 
+   RowBox[{
+    RowBox[{"Print", "[", 
+     RowBox[{"\"\<Alice's Shared Secret: \>\"", ",", "sharedSecretAlice"}], 
+     "]"}], ";"}], "\n", 
+   RowBox[{
+    RowBox[{"Print", "[", 
+     RowBox[{"\"\<Bob's Shared Secret: \>\"", ",", "sharedSecretBob"}], "]"}],
+     ";"}], "\[IndentingNewLine]", "\n", 
+   RowBox[{"(*", 
+    RowBox[{"Verification", " ", "of", " ", "Shared", " ", "Secret"}], "*)"}],
+    "\[IndentingNewLine]", 
+   RowBox[{
+    RowBox[{"If", "[", 
+     RowBox[{
+      RowBox[{"sharedSecretAlice", "===", "sharedSecretBob"}], ",", 
+      RowBox[{
+      "Print", "[", 
+       "\"\<Diffie-Hellman Test Passed: Shared secrets match.\>\"", "]"}], 
+      ",", 
+      RowBox[{
+      "Print", "[", 
+       "\"\<Diffie-Hellman Test Failed: Shared secrets do not match.\>\"", 
+       "]"}]}], "]"}], ";"}], "\[IndentingNewLine]", "\[IndentingNewLine]", 
+   RowBox[{"(*", 
+    RowBox[{"AES", " ", "Encryption"}], "*)"}], "\n", 
+   RowBox[{"(*", 
+    RowBox[{
+     RowBox[{
+     "Hash", " ", "the", " ", "shared", " ", "secret", " ", "to", " ", "get", 
+      " ", "a", " ", "256"}], "-", 
+     RowBox[{"bit", " ", "key"}]}], "*)"}], "\[IndentingNewLine]", 
+   RowBox[{
+    RowBox[{"aesKey", "=", 
+     RowBox[{"IntegerString", "[", 
+      RowBox[{
+       RowBox[{"Hash", "[", 
+        RowBox[{"sharedSecretAlice", ",", "\"\<SHA256\>\""}], "]"}], ",", 
+       "16", ",", "64"}], "]"}]}], ";"}], "\n", 
+   RowBox[{
+    RowBox[{"Print", "[", 
+     RowBox[{"\"\<AES Key (256-bit): \>\"", ",", "aesKey"}], "]"}], ";"}], 
+   "\[IndentingNewLine]", "\n", 
+   RowBox[{"(*", 
+    RowBox[{"Example", ":", 
+     RowBox[{
+     "Encrypt", " ", "and", " ", "Decrypt", " ", "a", " ", "Message", " ", 
+      "using", " ", "AES"}]}], "*)"}], "\[IndentingNewLine]", 
+   RowBox[{
+    RowBox[{"message", "=", "\"\<Hello, this is a test message!\>\""}], ";"}],
+    "\n", 
+   RowBox[{
+    RowBox[{"Print", "[", 
+     RowBox[{"\"\<Original Message: \>\"", ",", "message"}], "]"}], ";"}], 
+   "\n", "\[IndentingNewLine]", 
+   RowBox[{
+    RowBox[{"encryptedMessage", "=", 
+     RowBox[{"Encrypt", "[", 
+      RowBox[{"aesKey", ",", "message"}], "]"}]}], ";"}], "\n", 
+   RowBox[{
+    RowBox[{"Print", "[", 
+     RowBox[{"\"\<Encrypted Message: \>\"", ",", "encryptedMessage"}], "]"}], 
+    ";"}], "\n", "\[IndentingNewLine]", 
+   RowBox[{
+    RowBox[{"decryptedMessage", "=", 
+     RowBox[{"Decrypt", "[", 
+      RowBox[{"aesKey", ",", "encryptedMessage"}], "]"}]}], ";"}], "\n", 
+   RowBox[{
+    RowBox[{"Print", "[", 
+     RowBox[{"\"\<Decrypted Message: \>\"", ",", "decryptedMessage"}], "]"}], 
+    ";"}], "\[IndentingNewLine]", "\n", 
+   RowBox[{"(*", 
+    RowBox[{"Verification", " ", "of", " ", "AES", " ", "Encryption"}], 
+    "*)"}], "\[IndentingNewLine]", 
+   RowBox[{
+    RowBox[{"If", "[", 
+     RowBox[{
+      RowBox[{"message", "===", "decryptedMessage"}], ",", 
+      RowBox[{
+      "Print", "[", 
+       "\"\<AES Test Passed: Decrypted message matches the original.\>\"", 
+       "]"}], ",", 
+      RowBox[{
+      "Print", "[", 
+       "\"\<AES Test Failed: Decrypted message does not match the original.\>\
+\"", "]"}]}], "]"}], ";"}], "\n"}]}]], "Input",
+ CellChangeTimes->{{3.9095397941901484`*^9, 3.909539794191147*^9}},
+ CellLabel->"In[69]:=",ExpressionUUID->"a86f83be-04bc-4cff-a352-670d983860cc"],
+
+Cell[CellGroupData[{
+
+Cell[BoxData[
+ InterpretationBox[
+  RowBox[{"\<\"Alice's Private Key (a): \"\>", "\[InvisibleSpace]", 
+   "42734945070004357863056642546244018577860157993514966723788466589749262536\
+574065030515511984169077758788502896808686475906942894886690189243715340630491\
+543966818108191740656699281442578833164739273060508836904316905073535645153863\
+804248131690401183742082003137575732185290507807584607811680847694618728911691\
+241693313245877387595482950988097788239695553726806941894722628868676177958135\
+887124675266406452041514475229136470624218434467928171766887264023894442513039\
+256363756698744033218320412640147238456134527322394302651269108348898097418286\
+98858844757891958559654901024434439408414139702416746890971095598804378631"}],
+  SequenceForm[
+  "Alice's Private Key (a): ", 
+   427349450700043578630566425462440185778601579935149667237884665897492625365\
+740650305155119841690777587885028968086864759069428948866901892437153406304915\
+439668181081917406566992814425788331647392730605088369043169050735356451538638\
+042481316904011837420820031375757321852905078075846078116808476946187289116912\
+416933132458773875954829509880977882396955537268069418947226288686761779581358\
+871246752664064520415144752291364706242184344679281717668872640238944425130392\
+563637566987440332183204126401472384561345273223943026512691083488980974182869\
+8858844757891958559654901024434439408414139702416746890971095598804378631],
+  Editable->False]], "Print",
+ CellChangeTimes->{3.9095397963375826`*^9},
+ CellLabel->
+  "During evaluation of \
+In[69]:=",ExpressionUUID->"fe92df2a-8644-4ffc-a1f9-eee25bac586b"],
+
+Cell[BoxData[
+ InterpretationBox[
+  RowBox[{"\<\"Bob's Private Key (b): \"\>", "\[InvisibleSpace]", 
+   "21234565741983555002358815939258300570254081849962990908616446454033395766\
+364261796596667602133782358959648401499969881676805081662273465400329350868971\
+760498571582284536624882368259198823037595874946632016100407912829068561352909\
+682059090344136399680030926001567952941233899265981568823502274366374257232440\
+189794903872449850523510491820642708835537239024237932327775572528932604818719\
+333078757255403153261014792351420716532856049692967239873280879205340342665234\
+497385105123114973921186637759609321559232560890044620988436978104072689661023\
+330080427933728187833158443850190598086549519700774158703261115528039754413"}],
+  SequenceForm[
+  "Bob's Private Key (b): ", 
+   212345657419835550023588159392583005702540818499629909086164464540333957663\
+642617965966676021337823589596484014999698816768050816622734654003293508689717\
+604985715822845366248823682591988230375958749466320161004079128290685613529096\
+820590903441363996800309260015679529412338992659815688235022743663742572324401\
+897949038724498505235104918206427088355372390242379323277755725289326048187193\
+330787572554031532610147923514207165328560496929672398732808792053403426652344\
+973851051231149739211866377596093215592325608900446209884369781040726896610233\
+30080427933728187833158443850190598086549519700774158703261115528039754413],
+  Editable->False]], "Print",
+ CellChangeTimes->{3.9095397963455014`*^9},
+ CellLabel->
+  "During evaluation of \
+In[69]:=",ExpressionUUID->"a26e0cf6-fde2-41e5-b22f-b1170c806674"],
+
+Cell[BoxData[
+ InterpretationBox[
+  RowBox[{"\<\"Alice's Public Key (A): \"\>", "\[InvisibleSpace]", 
+   "96545341307316263554432096215261044568704050618184603825641676593921619934\
+643218656366418184406759521363466011449606790551047117422335463647275754654758\
+489935832790891600213213263389205127248570034196814735910945475669595561197974\
+346672987632963308122243962651347778688126531885141505428106149212960323420213\
+105107459116780593318181326257383241309535781648029492307383029242051699347968\
+475533520073646033166738130782465920266583930755797695999748556179523524375487\
+068783494915123024803928046880944409913408903839585492978789797993932851807618\
+31525287970418596061510750946210336249601289609931212792282188192026058572"}],
+  SequenceForm[
+  "Alice's Public Key (A): ", 
+   965453413073162635544320962152610445687040506181846038256416765939216199346\
+432186563664181844067595213634660114496067905510471174223354636472757546547584\
+899358327908916002132132633892051272485700341968147359109454756695955611979743\
+466729876329633081222439626513477786881265318851415054281061492129603234202131\
+051074591167805933181813262573832413095357816480294923073830292420516993479684\
+755335200736460331667381307824659202665839307557976959997485561795235243754870\
+687834949151230248039280468809444099134089038395854929787897979939328518076183\
+1525287970418596061510750946210336249601289609931212792282188192026058572],
+  Editable->False]], "Print",
+ CellChangeTimes->{3.909539796354735*^9},
+ CellLabel->
+  "During evaluation of \
+In[69]:=",ExpressionUUID->"19c1d8c4-206b-4627-90e6-bcb858e6558d"],
+
+Cell[BoxData[
+ InterpretationBox[
+  RowBox[{"\<\"Bob's Public Key (B): \"\>", "\[InvisibleSpace]", 
+   "10006385695468473709608685721390754166373632035897355690258395680262777002\
+557669472239009315318756915200946877844075763953588251301779379316759425251587\
+555378361317926416170950281074645242966247753382833833113851034052028262944193\
+727097375627274317838150097229693967652959742270820877039279067548209609436377\
+389785950792544770670677092542453193595615448618528673503911937075538321578915\
+343740728521149439610868814633611881046584720510616311711095184431689747604925\
+511619107492661187720288256137654345005432323704161269748599960213019652631052\
+895573610756747893612974995460931212080664048467402993287723033733592582188"}],
+  SequenceForm[
+  "Bob's Public Key (B): ", 
+   100063856954684737096086857213907541663736320358973556902583956802627770025\
+576694722390093153187569152009468778440757639535882513017793793167594252515875\
+553783613179264161709502810746452429662477533828338331138510340520282629441937\
+270973756272743178381500972296939676529597422708208770392790675482096094363773\
+897859507925447706706770925424531935956154486185286735039119370755383215789153\
+437407285211494396108688146336118810465847205106163117110951844316897476049255\
+116191074926611877202882561376543450054323237041612697485999602130196526310528\
+95573610756747893612974995460931212080664048467402993287723033733592582188],
+  Editable->False]], "Print",
+ CellChangeTimes->{3.9095397963587523`*^9},
+ CellLabel->
+  "During evaluation of \
+In[69]:=",ExpressionUUID->"29a8d945-ec67-40f4-9a6a-9f1d3b721ad2"],
+
+Cell[BoxData[
+ InterpretationBox[
+  RowBox[{"\<\"Alice's Shared Secret: \"\>", "\[InvisibleSpace]", 
+   "23679612712542713633420792529287863131602266259531073397240508930649916735\
+467297789905612533955101139321694302358004980632750926799832132801225309157062\
+248036427611034537188555872701287686892908664095938614452222321401174034868388\
+482340676802940074750433126375741933846436836001358617565893999919728721370337\
+194592237071812030967146804305268133878720270073476362828433294832979802041216\
+580776682194242365889181323845466395131175621719955172394148934194209693482408\
+845540193634051936011679203321822295716178389588133488801590742712035383420662\
+259529065437410762365045186328691760022295335350708956099255248194974001702"}],
+  SequenceForm[
+  "Alice's Shared Secret: ", 
+   236796127125427136334207925292878631316022662595310733972405089306499167354\
+672977899056125339551011393216943023580049806327509267998321328012253091570622\
+480364276110345371885558727012876868929086640959386144522223214011740348683884\
+823406768029400747504331263757419338464368360013586175658939999197287213703371\
+945922370718120309671468043052681338787202700734763628284332948329798020412165\
+807766821942423658891813238454663951311756217199551723941489341942096934824088\
+455401936340519360116792033218222957161783895881334888015907427120353834206622\
+59529065437410762365045186328691760022295335350708956099255248194974001702],
+  Editable->False]], "Print",
+ CellChangeTimes->{3.9095397963628917`*^9},
+ CellLabel->
+  "During evaluation of \
+In[69]:=",ExpressionUUID->"6cf2400f-bd4c-4fbb-9005-c3176cd992aa"],
+
+Cell[BoxData[
+ InterpretationBox[
+  RowBox[{"\<\"Bob's Shared Secret: \"\>", "\[InvisibleSpace]", 
+   "23679612712542713633420792529287863131602266259531073397240508930649916735\
+467297789905612533955101139321694302358004980632750926799832132801225309157062\
+248036427611034537188555872701287686892908664095938614452222321401174034868388\
+482340676802940074750433126375741933846436836001358617565893999919728721370337\
+194592237071812030967146804305268133878720270073476362828433294832979802041216\
+580776682194242365889181323845466395131175621719955172394148934194209693482408\
+845540193634051936011679203321822295716178389588133488801590742712035383420662\
+259529065437410762365045186328691760022295335350708956099255248194974001702"}],
+  SequenceForm[
+  "Bob's Shared Secret: ", 
+   236796127125427136334207925292878631316022662595310733972405089306499167354\
+672977899056125339551011393216943023580049806327509267998321328012253091570622\
+480364276110345371885558727012876868929086640959386144522223214011740348683884\
+823406768029400747504331263757419338464368360013586175658939999197287213703371\
+945922370718120309671468043052681338787202700734763628284332948329798020412165\
+807766821942423658891813238454663951311756217199551723941489341942096934824088\
+455401936340519360116792033218222957161783895881334888015907427120353834206622\
+59529065437410762365045186328691760022295335350708956099255248194974001702],
+  Editable->False]], "Print",
+ CellChangeTimes->{3.909539796367896*^9},
+ CellLabel->
+  "During evaluation of \
+In[69]:=",ExpressionUUID->"093c4274-f510-4b83-b590-dd4460e6a7c2"],
+
+Cell[BoxData["\<\"Diffie-Hellman Test Passed: Shared secrets match.\"\>"], \
+"Print",
+ CellChangeTimes->{3.9095397963718753`*^9},
+ CellLabel->
+  "During evaluation of \
+In[69]:=",ExpressionUUID->"ecfb865b-bcd8-42c3-9565-dcfbbfe22e95"],
+
+Cell[BoxData[
+ InterpretationBox[
+  RowBox[{"\<\"AES Key (256-bit): \"\>", 
+   "\[InvisibleSpace]", \
+"\<\"8b3d255067652c5b5045f648ab02d674d608cbeff5e78aaf6fb45a1d2862dffb\"\>"}],
+  SequenceForm[
+  "AES Key (256-bit): ", 
+   "8b3d255067652c5b5045f648ab02d674d608cbeff5e78aaf6fb45a1d2862dffb"],
+  Editable->False]], "Print",
+ CellChangeTimes->{3.9095397981916137`*^9},
+ CellLabel->
+  "During evaluation of \
+In[69]:=",ExpressionUUID->"5479c769-6708-4ad3-8460-7fb33f928f9d"],
+
+Cell[BoxData[
+ InterpretationBox[
+  RowBox[{"\<\"Original Message: \"\>", 
+   "\[InvisibleSpace]", "\<\"Hello, this is a test message!\"\>"}],
+  SequenceForm["Original Message: ", "Hello, this is a test message!"],
+  Editable->False]], "Print",
+ CellChangeTimes->{3.909539798198*^9},
+ CellLabel->
+  "During evaluation of \
+In[69]:=",ExpressionUUID->"a09118cb-424e-49e4-af81-469a2c06d283"],
+
+Cell[BoxData[
+ InterpretationBox[
+  RowBox[{"\<\"Encrypted Message: \"\>", "\[InvisibleSpace]", 
+   InterpretationBox[
+    RowBox[{
+     TagBox["EncryptedObject",
+      "SummaryHead"], "[", 
+     DynamicModuleBox[{Typeset`open$$ = False, Typeset`embedState$$ = 
+      "Ready"}, 
+      TemplateBox[{
+        PaneSelectorBox[{False -> GridBox[{{
+              PaneBox[
+               ButtonBox[
+                DynamicBox[
+                 FEPrivate`FrontEndResource["FEBitmaps", "SummaryBoxOpener"], 
+                 ImageSizeCache -> {10.0329375, {0., 10.0329375}}], 
+                Appearance -> None, BaseStyle -> {}, 
+                ButtonFunction :> (Typeset`open$$ = True), Evaluator -> 
+                Automatic, Method -> "Preemptive"], 
+               Alignment -> {Center, Center}, ImageSize -> 
+               Dynamic[{
+                 Automatic, 
+                  3.5 (CurrentValue["FontCapHeight"]/AbsoluteCurrentValue[
+                   Magnification])}]], 
+              GraphicsBox[
+               RasterBox[CompressedData["
+1:eJxTTMoPSmVmYGDggGIQ+9HJvLQvyk/tiaWND91uFhB4gEFvPWpqN/nvI/tX
+Z2xVavLf2MfdmLV2T8pbnObgUo/LfFLNwaW+96LVqlkKd+zXfdAT/yj7wF52
+w+qTwdcek2wOqTQue3H5l9RwoJb5AxUvuNTj8he1xEl1D6nhQ6o51EpX1DJ/
+oNIhtfxFaviTai+p6YFU/5KqnlRxAOzSPG4=
+                "], {{0, 0}, {8, 8}}, {0, 1}], Frame -> None, 
+               FrameLabel -> {None, None}, 
+               FrameTicks -> {{None, None}, {None, None}}, GridLinesStyle -> 
+               Directive[
+                 GrayLevel[0.5, 0.4]], ImageSize -> 
+               Dynamic[{Automatic, 3.5 CurrentValue["FontCapHeight"]}], 
+               Method -> {
+                "GridLinesInFront" -> True, "DefaultBoundaryStyle" -> 
+                 Automatic, 
+                 "DefaultGraphicsInteraction" -> {
+                  "Version" -> 1.2, "TrackMousePosition" -> {True, False}, 
+                   "Effects" -> {
+                    "Highlight" -> {"ratio" -> 2}, 
+                    "HighlightPoint" -> {"ratio" -> 2}, 
+                    "Droplines" -> {
+                    "freeformCursorMode" -> True, 
+                    "placement" -> {"x" -> "All", "y" -> "None"}}}}, 
+                 "DefaultPlotStyle" -> Automatic}, PlotRangePadding -> None], 
+              GridBox[{{
+                 RowBox[{
+                   TagBox["\"Data length: \"", "SummaryItemAnnotation"], 
+                   "\[InvisibleSpace]", 
+                   TagBox[
+                    
+                    TemplateBox[{"32", "\"B\"", "bytes", "\"Bytes\""}, 
+                    "Quantity"], "SummaryItem"]}]}, {
+                 RowBox[{
+                   TagBox["\"Original form: \"", "SummaryItemAnnotation"], 
+                   "\[InvisibleSpace]", 
+                   TagBox["String", "SummaryItem"]}]}}, AutoDelete -> False, 
+               BaseStyle -> {
+                ShowStringCharacters -> False, NumberMarks -> False, 
+                 PrintPrecision -> 3, ShowSyntaxStyles -> False}, 
+               GridBoxAlignment -> {
+                "Columns" -> {{Left}}, "Rows" -> {{Automatic}}}, 
+               GridBoxItemSize -> {
+                "Columns" -> {{Automatic}}, "Rows" -> {{Automatic}}}, 
+               GridBoxSpacings -> {
+                "Columns" -> {{2}}, "Rows" -> {{Automatic}}}]}}, AutoDelete -> 
+            False, BaselinePosition -> {1, 1}, 
+            GridBoxAlignment -> {"Columns" -> {{Left}}, "Rows" -> {{Top}}}, 
+            GridBoxItemSize -> {
+             "Columns" -> {{Automatic}}, "Rows" -> {{Automatic}}}], True -> 
+          GridBox[{{
+              PaneBox[
+               ButtonBox[
+                DynamicBox[
+                 FEPrivate`FrontEndResource["FEBitmaps", "SummaryBoxCloser"], 
+                 ImageSizeCache -> {10.0329375, {0., 10.0329375}}], 
+                Appearance -> None, BaseStyle -> {}, 
+                ButtonFunction :> (Typeset`open$$ = False), Evaluator -> 
+                Automatic, Method -> "Preemptive"], 
+               Alignment -> {Center, Center}, ImageSize -> 
+               Dynamic[{
+                 Automatic, 
+                  3.5 (CurrentValue["FontCapHeight"]/AbsoluteCurrentValue[
+                   Magnification])}]], 
+              GraphicsBox[
+               RasterBox[CompressedData["
+1:eJxTTMoPSmVmYGDggGIQ+9HJvLQvyk/tiaWND91uFhB4gEFvPWpqN/nvI/tX
+Z2xVavLf2MfdmLV2T8pbnObgUo/LfFLNwaW+96LVqlkKd+zXfdAT/yj7wF52
+w+qTwdcek2wOqTQue3H5l9RwoJb5AxUvuNTj8he1xEl1D6nhQ6o51EpX1DJ/
+oNIhtfxFaviTai+p6YFU/5KqnlRxAOzSPG4=
+                "], {{0, 0}, {8, 8}}, {0, 1}], Frame -> None, 
+               FrameLabel -> {None, None}, 
+               FrameTicks -> {{None, None}, {None, None}}, GridLinesStyle -> 
+               Directive[
+                 GrayLevel[0.5, 0.4]], ImageSize -> 
+               Dynamic[{Automatic, 3.5 CurrentValue["FontCapHeight"]}], 
+               Method -> {
+                "GridLinesInFront" -> True, "DefaultBoundaryStyle" -> 
+                 Automatic, 
+                 "DefaultGraphicsInteraction" -> {
+                  "Version" -> 1.2, "TrackMousePosition" -> {True, False}, 
+                   "Effects" -> {
+                    "Highlight" -> {"ratio" -> 2}, 
+                    "HighlightPoint" -> {"ratio" -> 2}, 
+                    "Droplines" -> {
+                    "freeformCursorMode" -> True, 
+                    "placement" -> {"x" -> "All", "y" -> "None"}}}}, 
+                 "DefaultPlotStyle" -> Automatic}, PlotRangePadding -> None], 
+              GridBox[{{
+                 RowBox[{
+                   TagBox["\"Data length: \"", "SummaryItemAnnotation"], 
+                   "\[InvisibleSpace]", 
+                   TagBox[
+                    
+                    TemplateBox[{"32", "\"B\"", "bytes", "\"Bytes\""}, 
+                    "Quantity"], "SummaryItem"]}]}, {
+                 RowBox[{
+                   TagBox["\"Original form: \"", "SummaryItemAnnotation"], 
+                   "\[InvisibleSpace]", 
+                   TagBox["String", "SummaryItem"]}]}, {
+                 RowBox[{
+                   TagBox["\"IV length: \"", "SummaryItemAnnotation"], 
+                   "\[InvisibleSpace]", 
+                   TagBox[
+                    
+                    TemplateBox[{"128", "\"b\"", "bits", "\"Bits\""}, 
+                    "Quantity"], "SummaryItem"]}]}, {
+                 RowBox[{
+                   TagBox["\"Padding method: \"", "SummaryItemAnnotation"], 
+                   "\[InvisibleSpace]", 
+                   TagBox["Automatic", "SummaryItem"]}]}}, AutoDelete -> 
+               False, BaseStyle -> {
+                ShowStringCharacters -> False, NumberMarks -> False, 
+                 PrintPrecision -> 3, ShowSyntaxStyles -> False}, 
+               GridBoxAlignment -> {
+                "Columns" -> {{Left}}, "Rows" -> {{Automatic}}}, 
+               GridBoxItemSize -> {
+                "Columns" -> {{Automatic}}, "Rows" -> {{Automatic}}}, 
+               GridBoxSpacings -> {
+                "Columns" -> {{2}}, "Rows" -> {{Automatic}}}]}}, AutoDelete -> 
+            False, BaselinePosition -> {1, 1}, 
+            GridBoxAlignment -> {"Columns" -> {{Left}}, "Rows" -> {{Top}}}, 
+            GridBoxItemSize -> {
+             "Columns" -> {{Automatic}}, "Rows" -> {{Automatic}}}]}, 
+         Dynamic[Typeset`open$$], ImageSize -> Automatic]},
+       "SummaryPanel"],
+      DynamicModuleValues:>{}], "]"}],
+    EncryptedObject[<|
+     "Cipher" -> "AES256", "BlockMode" -> "CBC", "InitializationVector" -> 
+      ByteArray[{92, 102, 133, 228, 40, 133, 229, 222, 8, 252, 206, 26, 79, 
+        188, 214, 95}], "Data" -> 
+      ByteArray[{104, 222, 151, 102, 74, 70, 195, 58, 191, 150, 108, 219, 112,
+         251, 28, 240, 20, 65, 222, 20, 82, 181, 177, 170, 149, 243, 128, 204,
+         75, 3, 86, 154}], "Padding" -> Automatic, "OriginalForm" -> String|>],
+    Editable->False,
+    SelectWithContents->True,
+    Selectable->False]}],
+  SequenceForm["Encrypted Message: ", 
+   EncryptedObject[<|
+    "Cipher" -> "AES256", "BlockMode" -> "CBC", "InitializationVector" -> 
+     ByteArray[{92, 102, 133, 228, 40, 133, 229, 222, 8, 252, 206, 26, 79, 
+       188, 214, 95}], "Data" -> 
+     ByteArray[{104, 222, 151, 102, 74, 70, 195, 58, 191, 150, 108, 219, 112, 
+       251, 28, 240, 20, 65, 222, 20, 82, 181, 177, 170, 149, 243, 128, 204, 
+       75, 3, 86, 154}], "Padding" -> Automatic, "OriginalForm" -> String|>]],
+  Editable->False]], "Print",
+ GeneratedCell->False,
+ CellAutoOverwrite->False,
+ CellChangeTimes->{{3.9095398015859327`*^9, 
+  3.9095398196222305`*^9}},ExpressionUUID->"1d00b62b-0a49-458a-a8c2-\
+ad76b22bf552"],
+
+Cell[BoxData[
+ InterpretationBox[
+  RowBox[{"\<\"Decrypted Message: \"\>", 
+   "\[InvisibleSpace]", "\<\"Hello, this is a test message!\"\>"}],
+  SequenceForm["Decrypted Message: ", "Hello, this is a test message!"],
+  Editable->False]], "Print",
+ CellChangeTimes->{3.9095398042732315`*^9},
+ CellLabel->
+  "During evaluation of \
+In[69]:=",ExpressionUUID->"d960a5d1-eb48-4c76-b645-79a3554b970c"],
+
+Cell[BoxData["\<\"AES Test Passed: Decrypted message matches the \
+original.\"\>"], "Print",
+ CellChangeTimes->{3.9095398042812605`*^9},
+ CellLabel->
+  "During evaluation of \
+In[69]:=",ExpressionUUID->"b4ff9bd2-de16-4f7b-ab52-9ffa1424901e"]
+}, Open  ]]
+}, Open  ]]
+},
+WindowSize->{871.8, 567.6},
+WindowMargins->{{18, Automatic}, {-22.199999999999932`, Automatic}},
+FrontEndVersion->"13.3 for Microsoft Windows (64-bit) (July 24, 2023)",
+StyleDefinitions->"Default.nb",
+ExpressionUUID->"b9c7ff2f-15a7-4d78-84eb-91de68e13beb"
+]
+(* End of Notebook Content *)
+
+(* Internal cache information *)
+(*CellTagsOutline
+CellTagsIndex->{}
+*)
+(*CellTagsIndex
+CellTagsIndex->{}
+*)
+(*NotebookFileOutline
+Notebook[{
+Cell[CellGroupData[{
+Cell[580, 22, 6394, 168, 1018, "Input",ExpressionUUID->"a86f83be-04bc-4cff-a352-670d983860cc"],
+Cell[CellGroupData[{
+Cell[6999, 194, 1604, 25, 145, "Print",ExpressionUUID->"fe92df2a-8644-4ffc-a1f9-eee25bac586b"],
+Cell[8606, 221, 1602, 25, 145, "Print",ExpressionUUID->"a26e0cf6-fde2-41e5-b22f-b1170c806674"],
+Cell[10211, 248, 1600, 25, 145, "Print",ExpressionUUID->"19c1d8c4-206b-4627-90e6-bcb858e6558d"],
+Cell[11814, 275, 1600, 25, 145, "Print",ExpressionUUID->"29a8d945-ec67-40f4-9a6a-9f1d3b721ad2"],
+Cell[13417, 302, 1602, 25, 145, "Print",ExpressionUUID->"6cf2400f-bd4c-4fbb-9005-c3176cd992aa"],
+Cell[15022, 329, 1596, 25, 145, "Print",ExpressionUUID->"093c4274-f510-4b83-b590-dd4460e6a7c2"],
+Cell[16621, 356, 234, 5, 22, "Print",ExpressionUUID->"ecfb865b-bcd8-42c3-9565-dcfbbfe22e95"],
+Cell[16858, 363, 472, 12, 22, "Print",ExpressionUUID->"5479c769-6708-4ad3-8460-7fb33f928f9d"],
+Cell[17333, 377, 388, 9, 22, "Print",ExpressionUUID->"a09118cb-424e-49e4-af81-469a2c06d283"],
+Cell[17724, 388, 8585, 173, 56, "Print",ExpressionUUID->"1d00b62b-0a49-458a-a8c2-ad76b22bf552"],
+Cell[26312, 563, 395, 9, 22, "Print",ExpressionUUID->"d960a5d1-eb48-4c76-b645-79a3554b970c"],
+Cell[26710, 574, 241, 5, 22, "Print",ExpressionUUID->"b4ff9bd2-de16-4f7b-ab52-9ffa1424901e"]
+}, Open  ]]
+}, Open  ]]
+}
+]
+*)
+
